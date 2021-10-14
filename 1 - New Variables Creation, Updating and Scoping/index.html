@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>var, let and const</title>
+</head>
+<body>
+    <h1>var, let and const</h1>
+    <script>
+        var money = 1000; // "money" is Globally scoped, since it is declared outside a function.
+        console.log('money', money);
+
+        money = 2000; // You can reassign/update the variable.
+        console.log('money', money);
+
+        var money = 5000; // It allows to redefine/redeclare the same variable.
+        console.log('money', money);
+
+        function getPie()
+        {
+            var pie = 3.14; // "pie" is Locally/Function scoped, because it's declared inside a function.
+            return pie;
+        }
+
+        // console.log('pie', pie); // this will give an error - pie is not defined
+
+        console.log('isAdult', isAdult); // It won't give undefined error because of "Variable Hoisting".
+
+        var age = 25;
+        if (age > 18) {
+            var isAdult = true; // Well this is available globally even if it is defined inside if block.
+            console.log('An adult!');
+        }
+
+        console.log(isAdult); // Its accessible here as well, outside of the if block statement.
+
+        // console.log(weekend); // It will give an error - weekend is not defined
+
+        var day = 'Sunday';
+        if (day == 'Sunday') {
+            let weekend = true;
+            console.log('Weekend time :)');
+        }
+
+        // console.log(weekend); // It will give an error - weekend is not defined
+
+        function getWeeks(numberOfDays) {
+            const noOfWeekDays = 7;
+
+            // noOfWeekDays = 8; // It will give an error - Assignment to constant variable
+
+            return numberOfDays/noOfWeekDays;
+        }
+
+        console.log(getWeeks(100));
+
+        let points = 50;
+        // let points = 60; // It will give an error - Identifier 'points' has already been declared
+
+        let winner = false; // this is scoped to window/globally scoped
+
+        if (points > 40) {
+            let winner = true; // this is scoped to this block only
+            console.log('winner', winner);
+        }
+
+        console.log('winner', winner);
+
+        const floors = 14;
+        // const floors = 15; // It will give an error - Identifier 'floors' has already been declared
+
+        const person = {
+            name: 'Mitesh',
+            age: 35
+        };
+        console.log('person', person);
+
+        // person = {
+        //     name: 'Mitesh Prajapati',
+        //     age: 35,
+        //     dob: '14-09-1985'
+        // }; // It will give an error - Assignment to constant variable
+
+        person.name = 'Mitesh Prajapati'; // But we can update object properties ;)
+
+        console.log('person', person);
+
+        const wes = Object.freeze({
+            name: 'Wes',
+            age: 30
+        });
+
+        console.log('wes', wes);
+
+        wes.age += 1; // Incrementing the age by 1.
+
+        console.log('wes', wes); // But we still get the same object as passed in the freeze.
+
+        // IIFE (Immediately Invoked Function Expression)
+        // Things inside of this won't be leaked to Global/Window scope.
+        (function() {
+            var player = 'Rohit Sharma';
+            console.log('player', player);
+        })();
+        // console.log(player); // It will give an error - player is not defined
+
+        for (var i = 0; i < 10; i++) {
+            console.log('i', i);
+
+            setTimeout(function() {
+                console.log(`The number is ${i}`);
+            }, i * 1000);
+        }
+
+        i = 99;
+
+        for (let j = 0; j < 10; j++) {
+            console.log('j', j);
+
+            setTimeout(function() {
+                console.log(`The number is ${j}`);
+            }, j * 1000);
+        }
+
+        console.log('pizza', pizza); // pizza accessible but its undefined, "Variable Hoisting"
+        var pizza = 'pizza 🍕 🍕 🍕';
+        console.log('pizza', pizza);
+
+        // console.log(burger); // can't access burger, gives an error
+        // ...
+        // temporal dead zone for burger until it's defined
+        // ...
+        let burger = 'burger 🍔 🍔 🍔';
+        console.log('burger', burger);
+
+        const foo = {};
+        foo.bar = 42;
+        console.log('foo', foo);
+        foo.bar = 50;
+        console.log('foo', foo);
+    </script>
+</body>
+</html>
