@@ -1,4 +1,4 @@
-# Wes Bos - ES6 For Everyone Course
+# Module-1: New Variables - Creation, Updating and Scoping
 
 ## 1. About var, let & const
 
