@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-2: Function Improvements - Arrows and Default Arguments</title>
+</head>
+<body>
+    <h1>Module-2: Function Improvements - Arrows and Default Arguments</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+
+    <!-- Arrow functions - examples -->
+
+    <script>
+        const names = [
+            'Steve Rogers',
+            'Tony Stark',
+            'Peter Parker'
+        ];
+
+        const nameWithStars = names.map(function(name) {
+            return `* ${name} *`;
+        });
+        console.log(nameWithStars);
+
+        // Now doing the same thing using the Arrow functions
+
+        // No need to write "function"
+        const nameWithStars2 = names.map((name) => {
+            return `* ${name} *`;
+        });
+        console.log(nameWithStars2);
+
+        // If there is a single parameter then we can omit the paranthesis () as well.
+        // It's a matter of choice. Some prefer to keep paranthesis even if there is a single parameter.
+        // Well we should keep the paranthesis, its kinda wrap the parameters.
+        const nameWithStars3 = names.map(name => {
+            return `* ${name} *`;
+        });
+        console.log(nameWithStars3);
+
+        // Finally just a one liner version.
+        // Since Arrow functions allows implicit returns we can remove curly braces {} 
+        // & omit the return as well.
+        const nameWithStars4 = names.map((name) => `* ${name} *`);
+        console.log(nameWithStars4);
+
+        // If there are no parameters then use empty paranthesis ()
+        const secretNames = names.map(() => `**********`);
+        console.log(secretNames);
+
+        // We can assign arrow functions to a variable.
+        const sayMyName = (name) => { alert(`Hello ${name}`); };
+        sayMyName('Mitesh');
+
+        // Implicit return with an Object literal.
+        const race = '100m dash';
+        const winners = ['Mitesh', 'Parth', 'Manan'];
+        const win = winners.map((winner, i) => ({
+            name: winner,
+            race: race,
+            place: i+1
+        }));
+        console.table(win);
+
+        const ages = [15, 75, 99, 61, 56, 45, 25, 35, 66, 60, 5, 29, 31, 35];
+        // We want to filter senior citizens, the ones with age >= 60
+        const srCitizens = ages.filter((age) => age >= 60);
+        console.log(srCitizens);
+
+        const srCitizens2 = ages.map((age) => age >= 60);
+        console.log(srCitizens2);
+
+        // "map" iterates over each of the values in an array, and returns a result for each of them.
+        // "filter" iterates over each of the values in an array, but returns only those which passes from the filter condition.
+    </script>
+
+
+    <!-- Arrow functions and "this" -->
+
+    <style>
+        .wrap {
+            min-height: 100vh;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            font-weight: 100;
+            color:white;
+        }
+        .box {
+            background:black url(https://unsplash.it/1500/1500?image=560&blur=0.5) center fixed no-repeat;
+            width:50px;
+            height:50px;
+            padding:50px;
+            transition: width 0.2s, height 0.6s;
+            position: relative;
+        }
+        .box.opening {
+            width:500px;
+            height:500px;
+        }
+        .box h2 {
+            position: absolute;
+            width:100%;
+            font-size: 100px;
+            transform:translateX(-200%);
+            transition: all 0.5s;
+            top:0;
+        }
+        .box p {
+            position: absolute;
+            width:100%;
+            transform:translateX(200%);
+            transition: all 0.5s;
+            bottom:0;
+        }
+        .box.open > * {
+            transform:translateX(0%);
+        }
+    </style>
+
+    <div class="wrap">
+        <div class="box">
+            <h2>Wes Bos</h2>
+            <p class="social">@wesbos</p>
+        </div>
+    </div>
+
+    <script>
+        const box = document.querySelector('.box');
+
+        console.log('"this" in the Global scope', this);
+
+        // Regular function in the global/window scope.
+        // Here the function is not bound to any html element,
+        // so there is nothing it can override "this" with it,
+        // and so "this" refers to "this" of the parent scope.
+        function helloConsole()
+        {
+            console.log('Hello 😊');
+            console.log('"this" in the helloConsole scope', this);
+        }
+        helloConsole();
+
+        // Arrow function in the global/window scope.
+        // Since it doesn't overrides "this" inside of it, "this" refers to "this" of the parent scope.
+        const hiConsole = () => {
+            console.log('Hi 🙋');
+            console.log('"this" in the hiConsole scope', this);
+        };
+        hiConsole();
+
+        // Regular function in the global/window scope.
+        // Its actually a callback function listening to a click event of the "box" element.
+        // Here the function is bound to the html element "box",
+        // so it overrides "this" of the parent scope 
+        // with "this" of the local scope which refers to the "box" element.
+        box.addEventListener('click', function() {
+            console.log('"this" in the click event listener regular callback function scope', this);
+
+            let first = 'opening';
+            let second = 'open';
+
+            if (this.classList.contains(first)) {
+                [first, second] = [second, first];
+            }
+
+            this.classList.toggle(first);
+
+            // Again a regular function, it overrides "this" of the parent scope,
+            // and since this anonymous function doesn't bound to any element, "this" refers to "window".
+
+            // A regular callback function inside another function scope.
+            // This function is not bound to any element, so "this" refers to "window".
+            setTimeout(function() {
+                console.log('"this" in the setTimeout regular callback function', this);
+            }, 500);
+
+            // In case of arrow function, "this" doesn't get rebound,
+            // it remains the same as it is in the current scope.
+            setTimeout(() => {
+                console.log('"this" in the setTimeout arrow callback function', this);
+                this.classList.toggle(second);
+            }, 500);
+        });
+
+        // When we use "this" inside an arrow function, it doesn't override "this" of the parent scope.
+        // So "this" refers to "window".
+        // box.addEventListener('click', () => {
+        //     console.log('"this" in the click event listener callback arrow function scope', this);
+        // });
+    </script>
+
+
+    <!-- Default function arguments -->
+
+    <script>
+        function calculateBill(total, tax = 0.15, tip = 0.05)
+        {
+            return total + (total * tax) + (total * tip);
+        }
+
+        console.log('Billing amount', calculateBill(100));
+
+        console.log('Billing amount', calculateBill(100, 0.12));
+
+        // In case you need to skip one of the default parameters in between...
+        console.log('Billing amount', calculateBill(100, undefined, 0.15));
+    </script>
+
+
+    <!-- Don't use Arrow Functions - Examples -->
+
+    <style>
+        button {
+            font-size: 100px;
+        }
+
+        .on {
+            background-color: #ffc600;
+        }
+    </style>
+
+    <button id="pushy">Push Me</button>
+
+    <script>
+        const button = document.querySelector('#pushy');
+
+        // Scenario #1
+        // When you really need "this" to refer to the current HTML element.
+        // Using Regular Function
+        // Here the function is bound to the button element,
+        // it is actually a callback which listens to button's click event.
+        // So when we use "this" inside of it,
+        // it refers to the button element overriding "this" in the global scope.
+        button.addEventListener('click', function() {
+            console.log('this', this);
+            this.classList.toggle('on');
+        });
+
+        // // Using Arrow Function, misfires :(
+        // // Arrow function simply uses "this" from the global scope, it does not overrides it.
+        // button.addEventListener('click', () => {
+        //     console.log('this', this);
+        // });
+
+        // Scenario #2
+        // When you need a method to bind to the current object,
+        // in other words you really need to refer to "this", not global "this".
+        const player = {
+            points: 25,
+
+            // Won't work, misfires :(
+            // Uses "this" from the global scope
+            // incrementScore: (val = 1) => {
+            //     console.log('incrementScore this', this);
+            //     this.points += val;
+            // },
+
+            // Regular function works :)
+
+            // incrementScore: function(val = 1) {
+            //     this.points += val;
+            // },
+
+            // Alternate way of writing...
+            incrementScore(val = 1) {
+                this.points += val;
+            },
+
+            // decrementScore: function(val = 1) {
+            //     this.points -= val;
+            // }
+
+            // Alternate way of writing...
+            decrementScore(val = 1) {
+                this.points -= val;
+            }
+        };
+
+        // console.log(player);
+        // console.log(player.points); // 25
+        // player.incrementScore();
+        // console.log(player.points); // 26
+        // player.decrementScore();
+        // console.log(player.points); // 25
+
+        // Scenario #3
+        // When you need to add a prototype method.
+        class Car {
+            constructor(make, model) {
+                this.make = make;
+                this.model = model;
+            }
+
+            // Regular functions, please :)
+            // summarize() {
+            //     return `This is ${this.model} of ${this.make} year.`;
+            // }
+        };
+
+        const tiagoCar = new Car(2021, 'Tata Tiago');
+        const nexonCar = new Car(2021, 'Tata Nexon');
+
+        // Won't work :(
+        // Car.prototype.summarize = () => {
+        //     return `This Car is ${this.model} of ${this.make} year.`;
+        // };
+
+        // Correct :)
+        Car.prototype.summarize = function() {
+            return `This Car is ${this.model} of ${this.make} year.`;
+        };
+
+        console.log(tiagoCar);
+        console.log(tiagoCar.summarize());
+        console.log(nexonCar);
+        console.log(nexonCar.summarize());
+
+        // Scenario #4
+        // When you need arguments object.
+        // "arguments" is a keyword in JavaScript that gives an array of arguments 
+        // that were passed in while calling the function.
+        // You don't get arguments object if you use an arrow function.
+        // Won't work :(
+        // const orderChildren = () => {
+        // Correct :)
+        const orderChildren = function() {
+            console.log(arguments);
+
+            const children = Array.from(arguments);
+
+            return children.map((child, i) => {
+                return `${child} is child #${i+1}`;
+            });
+        };
+
+        console.log('Children', orderChildren('Shivansh', 'Shivank', 'Hetaxi'));
+    </script>
+
+
+    <!-- Arrow function examples -->
+
+    <script>
+        const numbers = [3, 62, 234, 7, 23, 74, 23, 76, 92];
+
+        const numbersGreaterThan70 = numbers.filter((number) => number > 70);
+
+        console.log('numbersGreaterThan70', numbersGreaterThan70);
+    </script>
+
+    <ul>
+        <li data-time="5:17">Flexbox Video</li>
+        <li data-time="8:22">Flexbox Video</li>
+        <li data-time="3:34">Redux Video</li>
+        <li data-time="5:23">Flexbox Video</li>
+        <li data-time="7:12">Flexbox Video</li>
+        <li data-time="7:24">Redux Video</li>
+        <li data-time="6:46">Flexbox Video</li>
+        <li data-time="4:45">Flexbox Video</li>
+        <li data-time="4:40">Flexbox Video</li>
+        <li data-time="7:58">Redux Video</li>
+        <li data-time="11:51">Flexbox Video</li>
+        <li data-time="9:13">Flexbox Video</li>
+        <li data-time="5:50">Flexbox Video</li>
+        <li data-time="5:52">Redux Video</li>
+        <li data-time="5:49">Flexbox Video</li>
+        <li data-time="8:57">Flexbox Video</li>
+        <li data-time="11:29">Flexbox Video</li>
+        <li data-time="3:07">Flexbox Video</li>
+        <li data-time="5:59">Redux Video</li>
+        <li data-time="3:31">Flexbox Video</li>
+    </ul>
+
+    <script>
+        // Select all the list items on the page and convert to an array.
+        const items = Array.from(document.querySelectorAll('[data-time]'));
+
+        // Filter for only the elements that contain the word 'flexbox'.
+        const flexboxItems = items.filter((item) => item.innerHTML === 'Flexbox Video');
+
+        // Map down to a list of time strings.
+        const timeStringsForFlexboxItems = flexboxItems.map((item) => item.getAttribute('data-time'));
+
+        // Map to an array of seconds.
+        const totalSecondsForFlexboxItems = timeStringsForFlexboxItems.map((item) => {
+            // split with : to get mins and seconds.
+            const timeParts = item.split(':');
+            // convert to seconds and return. First part is mins and second part is seconds.
+            return (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
+        }).reduce((previousValue, currentValue) => previousValue + currentValue);
+
+        console.log(totalSecondsForFlexboxItems);
+
+
+        // Refactoring the code, chaining array functions.
+        const totalSecondsForFlexboxItems2 = Array.from(document.querySelectorAll('[data-time]'))
+            .filter((item) => item.innerHTML === 'Flexbox Video')
+            .map((item) => item.getAttribute('data-time'))
+            .map((item) => {
+                // split with : to get mins and seconds.
+                const timeParts = item.split(':').map((part) => parseInt(part));
+                // convert to seconds and return. First part is mins and second part is seconds.
+                return (timeParts[0] * 60) + timeParts[1];
+            })
+            .reduce((previousValue, currentValue) => previousValue + currentValue);
+
+        console.log(totalSecondsForFlexboxItems2);
+    </script>
+</body>
+</html>
