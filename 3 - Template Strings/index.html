@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-3: Template Strings</title>
+</head>
+<body>
+    <h1>Module-3: Template Strings</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <div id="person"></div>
+
+    <div id="dogs"></div>
+
+    <div id="song"></div>
+
+    <div id="beer"></div>
+
+    <div id="parsedString"></div>
+
+    <div id="bio"></div>
+
+    <div id="myBio"></div>
+
+    <!-- Using template literals to construct required HTML -->
+    <script>
+        const dogName = 'Snickers';
+        const dogAge = 2;
+
+        // Using single quotes
+        const dogSentence = 'My dog ' + dogName + ' is ' + (dogAge * 7) + ' years old.';
+
+        // Using backticks.
+        const dogSentence2 = `My dog ${dogName} is ${(dogAge * 7)} years old.`;
+
+        console.log(dogSentence);
+        console.log(dogSentence2);
+    </script>
+
+    <script>
+        const person = {
+            name: 'Wes Bos',
+            job: 'Web Developer',
+            city: 'Hamilton',
+            bio: 'Wes Bos is a really cool guy that loves to teach Web Development!',
+        };
+
+        const personMarkup = `
+            <h2>
+                ${person.name}
+                <span class="job">${person.job}</span>
+            </h2>
+            <p class="location">${person.city}</p>
+            <p class="bio">${person.bio}</p>
+        `;
+
+        document.querySelector('#person').innerHTML = personMarkup;
+    </script>
+
+    <script>
+        const dogs = [
+            { name: 'Snickers', age: 2 },
+            { name: 'Hugo', age: 8 },
+            { name: 'Sunny', age: 1 },
+        ];
+
+        const dogsMarkup = `
+            <ul class="dogs-list">
+                ${dogs
+                    .map(dog => `<li>${dog.name} is ${dog.age * 7}</li>`)
+                    .join('')
+                }
+            </ul>
+        `;
+
+        document.querySelector('#dogs').innerHTML = dogsMarkup;
+    </script>
+
+    <script>
+        const song = {
+            name: 'Dying to live',
+            artist: 'Tupac',
+            featuring: 'Biggie Smalls'
+        };
+
+        const songMarkup = `
+            <p>
+                ${song.name} - ${song.artist}
+                ${song.featuring ? `(Featuring ${song.featuring})` : ''}
+            </p>
+        `;
+
+        document.querySelector('#song').innerHTML = songMarkup;
+    </script>
+
+    <script>
+        const beer = {
+            name: 'Belgian Wit',
+            brewery: 'Steam Whistle Brewery',
+            keywords: ['pale', 'cloudy', 'spiced', 'crisp'],
+        };
+
+        function renderKeywords(keywords) {
+            return `
+                <ul>
+                    ${keywords.map((keyword) => `<li>${keyword}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        const beerMarkup = `
+            <h2>${beer.name}</h2>
+            <p class="brewery">${beer.brewery}</p>
+            ${renderKeywords(beer.keywords)}
+        `;
+
+        document.querySelector('#beer').innerHTML = beerMarkup;
+    </script>
+
+    <!-- Tagged template literals -->
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+    <script>
+        const name = 'Snickers';
+        const age = 100;
+
+        function parseString(strings, ...values) {
+            let parsedString = '';
+
+            Array.from(strings).forEach((string, i) => {
+                parsedString += `${string}${values[i] ? `<span contenteditable class='highlight'>${values[i]}</span>` : ''}`;
+            });
+
+            return parsedString;
+        }
+
+        const sentence = parseString`My dog's name is ${name} and he is ${age} years old.`;
+
+        document.querySelector('#parsedString').innerHTML = sentence;
+    </script>
+
+    <!-- Tagged templates exercise -->
+    <script>
+        const abbreviations = {
+            HTML: 'Hyper Text Markup Language',
+            CSS: 'Cascading Style Sheets',
+            JS: 'JavaScript',
+        };
+
+        function addAbbreviations(strings, ...values) {
+            const abbreviated = values.map((value) => {
+                return abbreviations[value]
+                    ? `<abbr title="${abbreviations[value]}">${value}</abbr>`
+                    : value;
+            });
+
+            // let abbreviatedString = '';
+            // Array.from(strings).forEach((string, i) => {
+            //     abbreviatedString += string + (abbreviated[i] || '');
+            // });
+
+            // return abbreviatedString;
+
+            return Array.from(strings).reduce((prevString, string, index) => {
+                return `${prevString}${string}${abbreviated[index] || ''}`;
+            }, '');
+        }
+
+        const firstName = 'Wes';
+        const lastName = 'Bos';
+
+        const aboutSentence = addAbbreviations`<p>Hello my name is ${firstName} ${lastName} and I love to code ${'HTML'}, ${'CSS'} and ${'JS'}.</p>`;
+
+        document.querySelector('#bio').innerHTML = aboutSentence;
+    </script>
+
+    <!-- Sanitizing user data with tagged templates -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/0.8.2/purify.min.js"></script>
+    <script>
+        const myName = 'Wes Bos';
+        const aboutMe = `I love to do evil <img src="http://unsplash.it/100/100?random" onload="alert('You got hacked ;)')"/>`;
+
+        function sanitize(strings, ...values) {
+            const stringValue = strings.reduce((prev, next, i) => `${prev}${next}${values[i] || ''}`, '');
+            return DOMPurify.sanitize(stringValue);
+        }
+
+        const myBioMarkup = sanitize`<h3>${myName}</h3><p>${aboutMe}</p>`;
+
+        document.querySelector('#myBio').innerHTML = myBioMarkup;
+    </script>
+</body>
+</html>
