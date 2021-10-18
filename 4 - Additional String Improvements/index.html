@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-4: Additional String Improvements</title>
+</head>
+<body>
+    <h1>Module-4: Additional String Improvements</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <script>
+        const course = 'RFB2'; // RFB = React For Beginners
+        const flightNumber = '20-AC2018-jz';
+        const accountNumber = '825242631RT0001';
+
+        // .startsWith()
+        console.log(course.startsWith('RFB'));
+        console.log(course.startsWith('rfb'));
+
+        console.log(flightNumber.startsWith('AC'));
+        console.log(flightNumber.startsWith('AC', 3));
+
+        // .endsWith()
+        console.log(flightNumber.endsWith('jz'));
+        console.log(flightNumber.endsWith('JZ'));
+
+        console.log(accountNumber.endsWith('RT'));
+        console.log(accountNumber.endsWith('RT', 11));
+
+        // .includes()
+        console.log(flightNumber.includes('AC'));
+        console.log(flightNumber.includes('ac'));
+
+        console.log(accountNumber.includes('RT'));
+        console.log(accountNumber.includes('rt'));
+
+        // .repeat()
+        const make = 'BMW';
+        const model = 'x5';
+        const colour = 'Royal Blue';
+
+        function leftPad(str, length = 20) {
+            return `-> ${' '.repeat(length - str.length)}${str}`;
+        }
+
+        console.log(leftPad(make));
+        console.log(leftPad(model));
+        console.log(leftPad(colour));
+
+        console.log(`${'hello' * 5}`.repeat(10) + ' Batman :)');
+    </script>
+</body>
+</html>
