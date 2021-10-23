@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-6: Iterables and Looping</title>
+</head>
+<body>
+    <h1>Module-6: Iterables and Looping</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <div>
+        <p>Paragraph #1</p>
+        <p>Paragraph #2</p>
+        <p>Paragraph #3</p>
+        <p>Paragraph #4</p>
+        <p>Paragraph #5</p>
+        <p>Paragraph #6</p>
+        <p>Paragraph #7</p>
+        <p>Paragraph #8</p>
+        <p>Paragraph #9</p>
+        <p>Paragraph #10</p>
+    </div>
+
+    <script>
+        const cuts = [
+            'Chuck',
+            'Brisket',
+            'Shank',
+            'Short Rib'
+        ];
+
+        // Regular loop
+        for (let i = 0; i < cuts.length; i++) {
+            console.log(cuts[i]);
+        }
+
+        // forEach version
+        // We cannot use break (abort), continue (skip) in this kind of loop.
+        cuts.forEach((cut) => {
+            // Following won't work
+            // if (cut === 'Brisket') {
+            //     continue;
+            // }
+
+            console.log(cut);
+
+            // Following won't work
+            // if (cut === 'Brisket') {
+            //     break;
+            // }
+        });
+
+        // for in loop, it returns key
+        for (const index in cuts) {
+            console.log(cuts[index]);
+        }
+
+        // for of loop, it returns value
+        // We can use break (abort), continue (skip) in this kind of loop.
+        for (const cut of cuts) {
+            // if (cut === 'Brisket') {
+            //     continue;
+            // }
+
+            console.log(cut);
+
+            // if (cut === 'Brisket') {
+            //     break;
+            // }
+        }
+
+        const cutsItems = cuts.entries();
+
+        console.log(cutsItems);
+
+        console.log(cutsItems.next());
+        console.log(cutsItems.next());
+        console.log(cutsItems.next());
+        console.log(cutsItems.next());
+        console.log(cutsItems.next());
+
+        for (const cutsItem of cuts.entries()) {
+            console.log(cutsItem);
+        }
+
+        // Lets use destructuring.
+        for (const [key, value] of cuts.entries()) {
+            console.log(`${value} is item #${key + 1}`);
+        }
+
+        function addUpNumbers()
+        {
+            let sum = 0;
+            for (const value of arguments) {
+                sum += value;
+            }
+            return sum;
+        }
+
+        const sumOfNumbers = addUpNumbers(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
+
+        console.log(sumOfNumbers);
+
+        const myName = 'Mitesh Prajapati';
+        for (const char of myName) {
+            console.log(char);
+        }
+
+        const paragraphs = document.querySelectorAll('p');
+        console.log(paragraphs);
+
+        for (const paragraph of paragraphs) {
+            console.log(paragraph);
+
+            paragraph.addEventListener('click', function() {
+                this.textContent += '*';
+                console.log(this.textContent);
+            });
+        }
+
+        // Using for of loop with Objects
+
+        const apple = {
+            color: 'Red',
+            size: 'medium',
+            weight: 50,
+            sugar: 10
+        };
+
+        // Objects are not iterable.
+        // So the following doesn't work.
+        // for (const prop of apple) {
+        //     console.log(prop);
+        // }
+
+        // Following also doesn't work.
+        // for (const prop2 of apple.entries()) {
+        //     console.log(prop2);
+        // }
+
+        for (const prop3 of Object.keys(apple)) {
+            const value = apple[prop3];
+            console.log(value, prop3);
+        }
+
+        // Use of for in is simpler here.
+        for (const prop4 in apple) {
+            const value = apple[prop4];
+            console.log(value, prop4);
+        }
+    </script>
+</body>
+</html>
