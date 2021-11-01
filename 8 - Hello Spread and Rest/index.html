@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-8: Say Hello to ...Spread and ...Rest</title>
+    <style>
+        .jump-area {
+            min-height: 100vh;
+            font-family: sans-serif;
+            background: #ffc600;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            color:white;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+        .jump span {
+            display: inline-block;
+            transition: transform 0.2s;
+            cursor:url('http://csscursor.info/source/santahand.png'), default;
+        }
+        .jump span:hover {
+            transform: translateY(-20px) rotate(10deg) scale(2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Module-8: Say Hello to ...Spread and ...Rest</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <div class="jump-area">
+        <h2 class="jump">Spreads!</h2>
+    </div>
+
+    <div class="people">
+        <p>Mitesh</p>
+        <p>Manan</p>
+        <p>Parth</p>
+    </div>
+
+    <script>
+        const featured = ['Deep Dish', 'Peperoni', 'Hawaiian'];
+        const specialty = ['Meatzza', 'Spicy Mama', 'Margherita'];
+
+        // let pizzas = [];
+        // pizzas = pizzas.concat(featured);
+        // pizzas.push('Veg Supreme')
+        // pizzas = pizzas.concat(specialty);
+        // console.log(pizzas);
+
+        // OR
+        // we can make use of spread operator
+        let pizzas = [...featured, 'Veg Supreme', ...specialty];
+        console.log('pizzas', pizzas);
+
+        // fridayPizzas and pizzas pointing to the same array.
+        let fridayPizzas = pizzas;
+        console.log('fridayPizzas', fridayPizzas);
+
+        // Change the first item.
+        fridayPizzas[0] = 'Paneer Tikka';
+
+        console.log('fridayPizzas', fridayPizzas);
+        console.log('pizzas', pizzas);
+
+        // Following will copy pizzas array.
+        // So its a different array.
+        let sundayPizzas = [...pizzas];
+
+        // Change the first item.
+        sundayPizzas[0] = 'Farm Feast';
+
+        console.log('sundayPizzas', sundayPizzas);
+        console.log('pizzas', pizzas);
+
+
+        const jumpElement = document.querySelector('.jump');
+        console.log('jumpElement', jumpElement);
+        console.log('jumpElement', jumpElement.innerHTML);
+
+        jumpElement.innerHTML = [...jumpElement.innerHTML].map((item) => `<span>${item}</span>`).join('');
+
+        const people = Array.from(document.querySelectorAll('.people p'));
+        console.log('people', people);
+        const peopleNames = people.map((person) => person.textContent);
+        console.log('peopleNames', peopleNames);
+
+        // OR
+        // we can do the same using spread operator
+
+        const people2 = [...document.querySelectorAll('.people p')];
+        console.log('people2', people2);
+
+        const peopleNames2 = people2.map((person) => person.textContent);
+        console.log('peopleNames2', peopleNames2);
+
+        const deepDish = {
+            pizzaName: 'Deep Dish',
+            size: 'Medium',
+            ingredients: ['Marinara', 'Italian Sausage', 'Dough', 'Cheeze']
+        };
+
+        const todaysShoppingList = ['Milk', 'Banana', 'Tea', ...deepDish.ingredients];
+        console.log(todaysShoppingList);
+
+        const comments = [
+            { id: 209384, text: 'I love your dog!' },
+            { id: 523423, text: 'Cuuute! 🐐' },
+            { id: 632429, text: 'You are so dumb' },
+            { id: 192834, text: 'Nice work on this wes!' },
+        ];
+        const idToRemove = 632429;
+
+        const commentIndex = comments.findIndex((comment) => comment.id === idToRemove);
+
+        console.log(commentIndex);
+
+        // Now we want to delete the comment with id = idToRemove
+
+        const newComment = [...comments.slice(0, commentIndex), ...comments.slice(commentIndex + 1)];
+
+        console.log(newComment);
+
+        const inventors = ['Einstein', 'Newton', 'Galileo'];
+        const newInventors = ['Musk', 'Jobs'];
+
+        // inventors.push(newInventors);
+
+        inventors.push(...newInventors);
+
+        // Do the same without using spread operator
+        // inventors.push.apply(inventors, newInventors);
+
+        console.log('inventors', inventors);
+
+        const fullName = ['John', 'Wick'];
+        function sayHello(firstName, lastName)
+        {
+            console.log(firstName, lastName);
+            alert(`Hello ${firstName} ${lastName}`);
+        }
+
+        sayHello(...fullName);
+
+        // ...Rest parameter example
+
+        function convertCurrency(rate, ...amounts)
+        {
+            return amounts.map((amount) => (amount * rate));
+        }
+
+        const amounts = convertCurrency(1.54, 10, 23, 52, 1, 56);
+
+        console.log(amounts);
+
+        function anyOneAdult(...ages)
+        {
+            // for (age of ages) {
+            //     if (age >= 18) {
+            //         return true;
+            //     }
+            // }
+
+            // return false;
+
+            // OR a one liner as below
+
+            return ages.findIndex(age => age >= 18) !== -1;
+        }
+
+        console.log(anyOneAdult(10, 20, 30, 40, 50, 60, 70, 80, 90, 100));
+
+        const runner = ['Wes Bos', 123, 5.5, 4, 3, 7, 35];
+        const [name, id, ...runs] = runner;
+        console.log(name, id, runs);
+
+        const team = ['Wes', 'Kait', 'Lux', 'Sheena', 'Kelly'];
+        const [captain, assistant, ...players] = team;
+        console.log(captain, assistant, players);
+    </script>
+</body>
+</html>
