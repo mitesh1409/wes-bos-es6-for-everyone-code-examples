@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-9: Object Literal Upgrades</title>
+</head>
+<body>
+    <h1>Module-9: Object Literal Upgrades</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <script>
+        const first = 'snickers';
+        const last = 'bos';
+        const age = 2;
+        const breed = 'King Charles Cav';
+
+        // const dog = {
+        //     first: first,
+        //     last: last,
+        //     age: age,
+        //     breed: breed
+        // };
+
+        // If property names and variables we assign to them have the same name,
+        // then we can use shorthand syntax.
+        // const dog = {
+        //     first,
+        //     last,
+        //     age,
+        //     breed
+        // };
+
+        const dog = {
+            firstName: first,
+            lastName: last,
+            age,
+            breed,
+            pals: ['Hugo', 'Sunny']
+        };
+
+        console.log('dog', dog);
+
+
+        // const modal = {
+        //     create: function() {
+
+        //     },
+
+        //     open: function() {
+
+        //     },
+
+        //     close: function() {
+
+        //     }
+        // };
+
+        // Using the shorthand syntax, we can define the same model as above
+        const modal = {
+            create() {
+
+            },
+
+            open() {
+
+            },
+
+            close() {
+
+            }
+        };
+
+
+        // We can define a computed property inside an object literal.
+        const key = 'pocketColor';
+        const value = '#ffc600';
+
+        function invertColor(color) {
+            return '#' + ("000000" + (0xFFFFFF ^ parseInt(color.substring(1),16)).toString(16)).slice(-6);
+        }
+
+        // In the definition we can compute value for an object property.
+        const tShirt = {
+            [key]: value,
+            [`${key}Opposite`]: invertColor(value)
+        };
+
+        console.log('tShirt', tShirt);
+
+        const keys = ['size', 'color', 'weight'];
+        const values = ['M', 'red', 100];
+
+        const shirt = {
+            [keys.shift()]: values.shift(),
+            [keys.shift()]: values.shift(),
+            [keys.shift()]: values.shift()
+        };
+        console.log('shirt', shirt);
+    </script>
+</body>
+</html>
