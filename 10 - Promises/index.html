@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-10: Promises</title>
+</head>
+<body>
+    <h1>Module-10: Promises</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <script>
+        // #1 Using Promises
+
+        // // Getting posts data from https://wesbos.com/wp-json/wp/v2/posts
+        // console.log('Going to fetch the latest posts from Wes Bos\'s Blog');
+        // // We can fetch any type of data, not just the JSON.
+        // const postsPromise = fetch('https://wesbos.com/wp-json/wp/v2/posts');
+        // console.log('Done!');
+        // console.log(postsPromise);
+
+        // // then() function only runs when the data comes back from the request.
+        // postsPromise
+        //     .then(data => data.json())
+        //     .then(data => { console.log(data) })
+        //     .catch((err) => {
+        //         console.error(err);
+        //     });
+
+        // Getting github profile data.
+        // const githubProfilePromise = fetch('https://api.github.com/users/mitesh1409');
+        // console.log('fetching my github profile...');
+
+        // githubProfilePromise
+        //     .then(data => data.json())
+        //     .then(data => { console.log('profile data', data) })
+        //     .catch((err) => {
+        //         console.error(err);
+        //     });
+
+
+        // #2 Building Your Own Promises
+
+        // const aPromise = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve({ 'message': 'Wes is cool ;)' });
+
+        //         // reject({ 'error': 'Something went wrong :(' });
+        //         // reject('Something went wrong :(');
+        //         // Better to throw an Error object. Because it gives more information for debugging.
+        //         // reject(Error('Something went wrong :('));
+        //     }, 1000);
+        // });
+
+        // aPromise
+        //     .then(data => {
+        //         console.log('aPromise data', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
+
+
+        // #3 Chaining Promises Flow Control
+
+        // const posts = [
+        //     { title: 'I love JavaScript', author: 'Wes Bos', id: 1 },
+        //     { title: 'CSS!', author: 'Chris Coyier', id: 2 },
+        //     { title: 'Dev tools tricks', author: 'Addy Osmani', id: 3 },
+        // ];
+
+        // const authors = [
+        //     { name: 'Wes Bos', twitter: '@wesbos', bio: 'Canadian Developer' },
+        //     { name: 'Chris Coyier', twitter: '@chriscoyier', bio: 'CSS Tricks and CodePen' },
+        //     { name: 'Addy Osmani', twitter: '@addyosmani', bio: 'Googler' },
+        // ];
+
+        // function getPostById(id) {
+        //     return new Promise((resolve, reject) => {
+        //         const post = posts.find(post => post.id === id);
+
+        //         if (!post) {
+        //             reject(Error('No post found!'));
+        //         }
+
+        //         resolve(post);
+        //     });
+        // }
+
+        // function hydrateAuthor(post) {
+        //     return new Promise((resolve, reject) => {
+        //         const authorDetails = authors.find(author => author.name === post.author);
+
+        //         if (!authorDetails) {
+        //             reject(Error('No author found!'));
+        //         }
+
+        //         post.author = authorDetails;
+        //         resolve(post);
+        //     });
+        // }
+
+        // getPostById(1)
+        //     .then(post => {
+        //         console.log(post);
+        //         return hydrateAuthor(post);
+        //     })
+        //     .then(post => {
+        //         console.log(post);
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
+
+
+        // #4 Working with multiple promises.
+
+        // const weather = new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve({ temp: 28, conditions: 'Sunny with clouds' });
+        //     }, 2000);
+        // });
+
+        // const tweets = new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve(['I like cake', 'BBQ is good too!']);
+        //     }, 500);
+        // });
+
+        // Promise
+        //     .all([weather, tweets])
+        //     .then((responses) => {
+        //         console.log(responses);
+
+        //         const [weatherData, tweetsData] = responses;
+
+        //         console.log('weather', weatherData, 'tweets', tweetsData);
+        //     });
+
+        // const postsPromise = fetch('https://wesbos.com/wp-json/wp/v2/posts');
+        const githubProfilePromise = fetch('https://api.github.com/users/mitesh1409');
+        const streetCarsPromise = fetch('http://data.ratp.fr/api/datasets/1.0/search/?q=paris');
+
+        Promise
+            .all([githubProfilePromise, streetCarsPromise])
+            .then(responses => {
+                return Promise.all(responses.map(res => res.json()));
+            })
+            .then(responses => {
+                console.log(responses);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>
