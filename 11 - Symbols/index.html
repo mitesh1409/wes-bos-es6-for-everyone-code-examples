@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module-11: Symbols</title>
+</head>
+<body>
+    <h1>Module-11: Symbols</h1>
+
+    <a href="../index.html">Back to Home</a>
+
+    <script>
+        // A symbol with no description/label.
+        const id = Symbol();
+
+        console.log(id);
+        console.log(typeof id);
+        console.log(id.toString());
+        console.log(id.description);
+
+        // A symbol with no description/label.
+        const game = Symbol('game');
+
+        console.log(game.toString());
+        console.log(game.description);
+
+        const user1 = Symbol('one');
+        const user2 = Symbol('one');
+
+        console.log('user1 and user2 are same?', user1 == user2);
+
+        // A symbol defines a unique identifier, descriptor/label can be same.
+        const wes = Symbol('Wes');
+        const aPerson = Symbol('Wes');
+
+        console.log('wes', wes);
+        console.log('aPerson', aPerson);
+
+        console.log('wes === aPerson', wes === aPerson);
+        console.log('wes == aPerson', wes == aPerson);
+
+        // const classRoom = {
+        //     'Mark': { grade: 50, gender: 'male' },
+        //     'Olivia': { grade: 80, gender: 'female' },
+        //     'Olivia': { grade: 90, gender: 'female' },
+        // };
+
+        const classRoom = {
+            [Symbol('Mark')]: { grade: 50, gender: 'male' },
+            [Symbol('Olivia')]: { grade: 80, gender: 'female' },
+            [Symbol('Olivia')]: { grade: 90, gender: 'female' },
+        };
+
+        console.log('classRoom', classRoom);
+
+        // We cannot iterate over symbols.
+        for (student in classRoom) {
+            console.log(student);
+        }
+
+        const studentSymbols = Object.getOwnPropertySymbols(classRoom);
+        console.log('studentSymbols', studentSymbols);
+
+        const classRoomData = studentSymbols.map(sym => classRoom[sym]);
+        console.log('classRoomData', classRoomData);
+    </script>
+</body>
+</html>
